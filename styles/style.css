@@ -1,0 +1,12 @@
+@font-face {font-family: 'LeagueGothic'; src: local('☺'), url('fonts/League\ Gothic.otf') format('opentype');}
+body {background: #000 url(/img/bg.jpg); font-size: 0.625em; color: #111; font-family: helvetica, arial, sans-serif; padding: 0 0 0 10px; margin: 0;}
+h1, h2, h3, h4, footer p {text-shadow: 0 1px 2px #333;}
+h1 {text-transform: uppercase; font-family: "LeagueGothic", Helvetica, Arial, sans-serif; font-size: 3.6em; margin:0; padding: 20px 0 10px 0;}
+hgroup {padding-left: 10px;}
+p {font-size: 1.4em;}
+a {color: #555; text-shadow: none; text-decoration: none; padding: 3px; background: rgba(255,255,255,0.1); -moz-border-radius: 6px; -webkit-border-radius: 6px; -khtml-border-radius: 6px; border-radius: 6px;}
+a:hover {color: #222; background: rgba(255,255,255,0.2);}
+footer {color: #000; background: transparent url(/img/sizeark.png) no-repeat bottom right; padding: 0 0 0 20px; height: 100px; position: fixed; bottom: 0; left: 0;}
+footer p {width: 70%; line-height: 1.5;}
+hr {height:0; min-height: 0; display: block; position: relative; padding: 0; margin: 8px 20px 0 0; clear: both; border: none; border-top: 1px solid #111; border-bottom: 1px solid #222; font-size: 1px; line-height: 0; overflow: visible;}
+canvas#timeline {margin: 20px 20px 20px 12px; color: #fff; font-size: 1.8em;}
