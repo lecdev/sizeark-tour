@@ -26,6 +26,7 @@ http.createServer(function (req,res) {
   if (parts.length > 0) {
     if (parts[0] == "styles" || parts[0] == "js" || parts[0] == "img") {
       var h = (parts[0] == "styles") ? 'text/css' : (parts[0] == "js") ? 'text/javascript' : (base.indexOf('png') != -1) ? 'image/png' : 'image/jpeg', filename = path.join(process.cwd()+'sizeark-tour/', base);  
+      console.log(filename);
       path.exists(filename, function(exists) {  
         if(!exists) {  
           res.writeHead(404, {'Content-Type':h});
