@@ -79,7 +79,7 @@ http.createServer(function (req,res) {
               var k = rows[j].id;
               db.getDoc(k+'', function(e,r){
                 if (r !== undefined) {
-                  var id = r._id+'', gigDate = [id.substr(7,2),'.',id.substr(3,2),'.',id.substr(1,4)].join('');
+                  var id = r._id+'', gigDate = [id.substr(7,2),'.',id.substr(5,2),'.',id.substr(1,4)].join('');
                   contentBuffer.push(['<li>',gigDate,' - ',r.venue,', ',r.city,'</li>'].join(''));          
                 }
               });
