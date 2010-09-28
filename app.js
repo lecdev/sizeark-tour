@@ -1,14 +1,74 @@
-var app = require('express').createServer(), couchdb = require('couchdb'),client = couchdb.createClient(5984, 'localhost'), db = client.db('tourarchive');
+var sys = require('sys'), 
+    couchdb = require('couchdb'),
+    client = couchdb.createClient(38284, 'localhost'),
+    db = client.db('tourarchive'),
+    http = require('http'),
+    url = require('url');
+    
+http.createServer(function (req,res) {
+  res.writeHead(200, {'Content-Type':'text/plain'});
+  
+  var path = url.parse(req.url), base = path.pathname, parts = base.split('/');
+  if (parts.length > 1) {
+    if (parts[1] == 'tour') {
+      // THE TOUR ARCHIVE LIVES HERE
+      var key, buffer = ['d'], doEndKey = true, endkey = ['d'];
+      if (parts.length > 2) {
+        var year = parts[2];
+        buffer.push(year);
+        
+        if (parts.length > 3) {
+          res.write('HAS A MONTH');
+          var month = parts[3];
+          buffer.push(month);
+          if (parts.length > 4) {
+            var day = parts[4];
+            buffer.push(day);
+            doEndKey = false;
+          } else {
+            var nextmonth = parseInt(month)+1;
+            if (nextmonth < 10) { nextmonth = "0"+nextmonth; }
+            endkey.push(year,nextmonth);
+          }
+        } else {
+          var nextYear = parseInt(year)+1;
+          endkey.push(nextYear);          
+        }        
+        key = buffer.join('');
+        
+        if (doEndKey) {
+          db.allDocs({startkey:key,endkey:endkey.join('')}, function(err,resp){
+            var rows = resp.rows, i = rows.length;
+            for (var j=0;j < i; j++) {
+              var k = rows[j].id;
+              db.getDoc(k+'', function(e,r){
+                if (r !== undefined) {
+                  res.write(r.venue + ', ' + r.city + '\n');
+                }
+              });
+            }
+            res.close();
+          });
+        } else {
+          db.getDoc(key, function(e,r){
+            if (r !== undefined) {
+              res.write(r.venue + ', ' + r.city + '\n');            
+            }
+          });
+          res.close();
+        }
+        
+      }
+      // END TOUR ARCHIVE
+    } else {
+      res.write(['One day ',parts[0],' could be yours\n'].join(''));
+    }
+  }
+  
+  //res.close();
+}).listen(59175,"127.0.0.1");    
+console.log('Server running at http://127.0.0.1:59175');
+    
 
-//db.saveDoc(new_id, this._[new_id]);
-//db.getDoc(id, function(err, res) {
-
-app.get('/',function(req,res){
-  res.send('Home Page.');
-});
-
-app.get('/s/:id',function(req,res){
-  res.send('Show: ' + req.params.id);
-});
-
-app.listen(3000);
+// for each year from current year back to 1999 inclusive, this'll need to fetch 
+// all docs for startkey: d+year, endkey: d+year+1
