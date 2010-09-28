@@ -8,21 +8,23 @@ var sys = require('sys'),
 http.createServer(function (req,res) {
   res.writeHead(200, {'Content-Type':'text/plain'});
   
-  var path = url.parse(req.url), base = path.pathname, parts = base.split('/');
-  if (parts.length > 1) {
-    if (parts[1] == 'tour') {
+  var path = url.parse(req.url), base = path.pathname, parts = base.split('/'), i = parts.length;
+  while (i--) {
+    if (parts[i].length === 0) { parts.splice(i,1); }
+  }
+  if (parts.length > 0) {
+    if (parts[0] == 'tour') {
       // THE TOUR ARCHIVE LIVES HERE
       var key, buffer = ['d'], doEndKey = true, endkey = ['d'];
-      if (parts.length > 2) {
-        var year = parts[2];
+      if (parts.length > 1) {
+        var year = parts[1];
         buffer.push(year);
         
-        if (parts.length > 3) {
-          res.write('HAS A MONTH');
-          var month = parts[3];
+        if (parts.length > 2) {
+          var month = parts[2];
           buffer.push(month);
-          if (parts.length > 4) {
-            var day = parts[4];
+          if (parts.length > 3) {
+            var day = parts[3];
             buffer.push(day);
             doEndKey = false;
           } else {
@@ -47,7 +49,6 @@ http.createServer(function (req,res) {
                 }
               });
             }
-            res.close();
           });
         } else {
           db.getDoc(key, function(e,r){
@@ -55,7 +56,6 @@ http.createServer(function (req,res) {
               res.write(r.venue + ', ' + r.city + '\n');            
             }
           });
-          res.close();
         }
         
       }
@@ -65,7 +65,7 @@ http.createServer(function (req,res) {
     }
   }
   
-  //res.close();
+  setTimeout(function(){res.close()},5000);
 }).listen(59175,"127.0.0.1");    
 console.log('Server running at http://127.0.0.1:59175');
     
