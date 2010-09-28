@@ -3,7 +3,17 @@ var sys = require('sys'),
     client = couchdb.createClient(38284, 'localhost'),
     db = client.db('tourarchive'),
     http = require('http'),
-    url = require('url');
+    url = require('url'),
+    layout = function layout(content) {
+      var aboveContent = '<!DOCTYPE html><html lang="en"><head><title>Oceansize: Tour Archive</title><link rel="stylesheet" type="text/css" href="styles/style.css"/><script type="text/javascript" src="/js/ta.js"></script></head><body><hgroup><h1>Oceansize Tour Archive</h1><hr /></hgroup>',
+          belowContent = '<footer><hr /><p>The Oceansize Tour Archive is a component of <em>sizeArk</em>, brought to you by <a href="http://sizeboard.com">sizeboard</a> and is a <a href="http://davestevens.us">Dave Stevens</a> production, handcrafted from the finest code for that rich, smooth 'size taste since 2003. That beautiful illustration over there? That's the work of the incredibly talented <a href="http://www.steevilweevil.com">Steve McCarthy</a>. You should follow us on twitter <a href="http://twitter.com/sizeboard">here</a></p></footer></body></html>';
+      content = content || '';
+      
+      return [aboveContent,content,belowContent].join('');    
+          
+    };
+
+
     
 http.createServer(function (req,res) {
   res.writeHead(200, {'Content-Type':'text/plain'});
@@ -61,9 +71,11 @@ http.createServer(function (req,res) {
       }
       // END TOUR ARCHIVE
     } else {
-      res.write(['One day ',parts[0],' could be yours\n'].join(''));
+      contentBuffer.push(['One day ',parts[0],' could be yours\n'].join(''));
     }
   }
+  
+  res.write(layout(contentBuffer.join('')));
   
   setTimeout(function(){res.close()},5000);
 }).listen(59175,"127.0.0.1");    
