@@ -25,8 +25,7 @@ http.createServer(function (req,res) {
   }
   if (parts.length > 0) {
     if (parts[0] == "styles" || parts[0] == "js" || parts[0] == "img") {
-      console.log('here in the binaries');
-      var h = (parts[0] == "styles") ? 'text/css' : (parts[0] == "js") ? 'text/javascript' : (base.indexOf('png') != -1) ? 'image/png' : 'image/jpeg', filename = path.join(process.cwd(), base);  
+      var h = (parts[0] == "styles") ? 'text/css' : (parts[0] == "js") ? 'text/javascript' : (base.indexOf('png') != -1) ? 'image/png' : 'image/jpeg', filename = path.join(process.cwd()+'sizeark-tour/', base);  
       path.exists(filename, function(exists) {  
         if(!exists) {  
           res.writeHead(404, {'Content-Type':h});
@@ -79,7 +78,6 @@ http.createServer(function (req,res) {
               var k = rows[j].id;
               db.getDoc(k+'', function(e,r){
                 if (r !== undefined) {
-                  console.log(r);
                   var id = r._id+'', gigDate = [id.substr(7,2),'.',id.substr(3,2),'.',id.substr(1,4)].join('');
                   contentBuffer.push(['<li>',gigDate,' - ',r.venue,', ',r.city,'</li>'].join(''));          
                 }
@@ -87,7 +85,6 @@ http.createServer(function (req,res) {
             }
             setTimeout(function(){
               contentBuffer.push('</ul>');              
-              console.log(contentBuffer.join(''));
               res.write(layout(contentBuffer.join('')));                  
             },20000);
           });
@@ -105,17 +102,16 @@ http.createServer(function (req,res) {
       }
       // END TOUR ARCHIVE
     } else {
-      console.log('here too with nothing to do');
       if (base.indexOf('favico') == -1) {
         res.writeHead(200,{'Content-Type':'text/html'})
-        contentBuffer.push(['One day ',parts[0],' could be yours\n'].join(''));
+//        contentBuffer.push(['One day ',parts[0],' could be yours\n'].join(''));
         res.write(layout(contentBuffer.join('')));      
         contentBuffer = [];
       }
     }
   }
     
-  setTimeout(function(){res.end()},50000);
+  setTimeout(function(){res.end()},30000);
 }).listen(59175,"127.0.0.1");    
 console.log('Server running at http://127.0.0.1:59175');
     
