@@ -29,7 +29,7 @@ div#summary {color: #fff; padding-top: 2px; position: relative;}
 div#summary p {color: #333;}
 div#summary p span {font-family: helvetica, arial, sans-serif; color: #fff; font-style: normal; margin-bottom: -10px; margin-top: -10px; font-size: 3.6em; font-weight: bold; display: block; width: 200px;}
 div#summary p em {font-size: 0.7em; display: block; margin-top: 20px; font-style: italic; font-family: "Georgia", serif;}
-.gig {width: 2px; height: 2px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; display: block; background: #555; float: left; margin: 2px; cursor: pointer; padding: 3px;}
+.gig {width: 2px; height: 2px; -webkit-border-radius: 6px; -moz-border-radius: 6px; border-radius: 6px; display: block; background: #555; float: left; margin: 2px; cursor: pointer; padding: 2px;}
 .new, .highlight {background: #fff;}
 .highlightYear {color: #fff;}
 .active {display: block;}
@@ -37,4 +37,4 @@ div#summary #gigDetail {position: absolute; left: 250px; top: 40px;}
 .gigInfo {position: relative; padding-left: 150px;}
 .gigInfo h3 {position: absolute; left: 0; font-size: 2.5em;}
 .gigInfo h2, .gigInfo h3 {margin: 0; padding: 0;}
-#others {display: none;}
+#others {display: none;}  
