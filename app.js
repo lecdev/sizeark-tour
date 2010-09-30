@@ -1,7 +1,7 @@
 var sys = require('sys'), 
     couchdb = require('couchdb'),
-//    client = couchdb.createClient(38284, '174.123.227.231'),
-    client = couchdb.createClient(38284, 'localhost'),
+    client = couchdb.createClient(38284, '174.123.227.231'),
+//    client = couchdb.createClient(38284, 'localhost'),
     db = client.db('tourarchive'),
     http = require('http'),
     path = require('path'),
@@ -9,7 +9,10 @@ var sys = require('sys'),
     url = require('url');
     
 http.createServer(function (req,res) {  
-  var p = url.parse(req.url), base = p.pathname;
+  
+  res.addListener('end', function(){ res.end(); });
+  
+  var p = url.parse(req.url), base = p.pathname;  
   if (base.indexOf('data') != -1) {
     // RETURNING DATA FOR AJAX CALL
     res.writeHead(200,{'Content-Type':'application/json'});
@@ -18,7 +21,7 @@ http.createServer(function (req,res) {
       if (parts[0] == 'tour') {
         // TOUR ARCHIVE LIVES HERE
         var query = {}, key, endk, buffer = ['d'], doEndKey = (l < 4), endkey = ['d'];
-        if (i > 1) {
+        if (l > 1) {
           for (var i = 1; i < l; i++) {
             var val = parts[i];
             buffer.push(val);
@@ -32,33 +35,32 @@ http.createServer(function (req,res) {
             }
           }
           key = buffer.join('');
-          if (doEndKey) { endk = endkey.join(''); }
+          if (doEndKey) { endk = endkey.join('');}
           query.startkey = key;
           if (endk !== undefined) { query.endkey = endk; }
         }
         
         if (doEndKey) {
-          db.allDocs(query, function(err,resp){
-            var rows = resp.rows, i = rows.length;
-            for (var j=0;j < i; j++) {
-              var k = rows[j].id;
-              db.getDoc(k+'', function(e,r){
-                if (r !== undefined) {
-                    res.write(JSON.stringify(r,['_id','venue','city']));
-//                  var id = r._id+'', gigDate = [id.substr(7,2),'.',id.substr(5,2),'.',id.substr(1,4)].join('');
-//                  contentBuffer.push(['<li>',gigDate,' - ',r.venue,', ',r.city,'</li>'].join(''));          
-                }
-              });
-            }
-
+          query.include_docs = true; 
+//          query.descending = true;
+          // make array here, add IDs in to it below, once resp is finished, loop over array and do getDoc on each and add to new array, stringify array and write to output.
+          db.allDocs(query, function(err, resp){
+            res.write(JSON.stringify(resp,['total_rows','rows','doc','_id','venue','city','country','otherbands','setlist','comments']));
+            res.end();            
           });
         } else {
-          
+          db.getDoc(key, function(e,r){
+            if (r !== undefined) {
+               res.write(JSON.stringify(r,['_id','venue','city','country','otherbands','setlist','comments']));
+               res.end();
+            }
+          });
         }
         
       }
+    } else {
+      res.end();
     }
-    res.end();
     
   } else {
     // REGULAR SERVER
