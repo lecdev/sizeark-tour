@@ -39,8 +39,6 @@ http.createServer(function (req,res) {
         
         if (doEndKey) {
           query.include_docs = true; 
-//          query.descending = true;
-          // make array here, add IDs in to it below, once resp is finished, loop over array and do getDoc on each and add to new array, stringify array and write to output.
           db.allDocs(query, function(err, resp){
             res.write(JSON.stringify(resp,['total_rows','rows','doc','_id','venue','city','country','otherbands','setlist','comments']));
             res.end();            
@@ -62,7 +60,7 @@ http.createServer(function (req,res) {
   } else {
     // REGULAR SERVER
     if (base == '/') { base = '/index.html'; }
-    var h = (base.indexOf('.css') != -1) ? 'text/css' : (base.indexOf('.js') != -1) ? 'text/javascript' : (base.indexOf('.png') != -1) ? 'image/png' : (base.indexOf('.jpg') != -1) ? 'image/jpeg' : 'text/html', filename = path.join(process.cwd(), base);
+    var h = (base.indexOf('.css') != -1) ? 'text/css' : (base.indexOf('.js') != -1) ? 'text/javascript' : (base.indexOf('.png') != -1) ? 'image/png' : (base.indexOf('.jpg') != -1) ? 'image/jpeg' : (base.indexOf('.html') != -1) ? 'text/html' : 'application/octet-stream', filename = path.join(process.cwd(), base);
     path.exists(filename, function(exists) {  
       if(!exists) {  
         res.writeHead(404, {'Content-Type':h});

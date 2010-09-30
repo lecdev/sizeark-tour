@@ -1,4 +1,4 @@
-/*@font-face {font-family: 'LeagueGothic'; src: local('☺'), url('http://r.davestevens.us/League\ Gothic.otf') format('opentype');}*/
+@font-face {font-family: 'LeagueGothic'; src: local('☺'), url('fonts/LeagueGothic.otf') format('opentype');}
 html {height: 100%;}
 body {height: 100%; background: #000 url(/img/bg.jpg); font-size: 0.625em; color: #111; font-family: helvetica, arial, sans-serif; padding: 0 0 0 10px; margin: 0 auto 0 auto;}
 body > div#wrap {height: auto; min-height: 99%; padding: 0; margin: 0;}
