@@ -26,15 +26,18 @@ http.createServer(function (req,res) {
               if (i == (l-1)) { 
                 var newVal = (parseInt(val)+1)+"";
                 if (newVal.length == 1) { newVal = "0"+newVal; }
-                val = newVal
+                val = newVal;
               } 
               endkey.push(val);
             }
           }
           key = buffer.join('');
-          if (doEndKey) { endk = endkey.join('');}
+          if (doEndKey) { endk = endkey.join(''); }
           query.startkey = key;
-          if (endk !== undefined) { query.endkey = endk; }
+          if (endk !== undefined) { query.endkey = endk; } 
+        } else {
+          var today = new Date(), month = (today.getUTCMonth()+1), day = (today.getUTCDate()-1);
+          query.endkey = ['d',today.getUTCFullYear(),((month < 10) ? '0'+month:month),((day < 10) ? '0'+day:day)].join('');
         }
         
         if (doEndKey) {

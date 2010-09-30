@@ -18,7 +18,13 @@
       }      
       buffer.push('<span>',i,'</span></div>');
     }
-    timeline.html(buffer.join(''));
+    timeline.html(buffer.join('')).click(function(e){
+      var target = e.target;
+      if (target.className.indexOf('gig') != -1) {
+//        var that = this;
+//        $(that).children('div').addClass('active');
+      }
+    });
     $('.year').width((100/yearsActive)-1.1+'%');
     
     $.ajax({
@@ -26,10 +32,11 @@
       success: function(data) {
         if (data && data.hasOwnProperty('rows')) {
           var rows = data.rows, len = rows.length;
+          $('#summary').html(['<p><span>',len,'*</span> completed gigs<em>*Total is a tentative number.</em></p>'].join(''));
           for (var i = 0; i < len; i++) {
             var gig = rows[i].doc, gigDate = gig._id.dateify(), monthId = gig._id.idify();
             $('.new').removeClass('new');
-            $('#m'+monthId).append(['<span class="new gig ',gig.id,'"><div>',gig.venue,', ',gig.city,'</div></span>'].join(''));
+            $('#m'+monthId).append(['<span class="new gig ',gig._id,'"><div>',gig.venue,', ',gig.city,'</div></span>'].join(''));
           }
         }
       }
