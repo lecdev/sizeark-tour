@@ -1,6 +1,5 @@
 var sys = require('sys'), 
     couchdb = require('couchdb'),
-//    client = couchdb.createClient(38284, '174.123.227.231'),
     client = couchdb.createClient(38284, 'localhost'),
     db = client.db('tourarchive'),
     http = require('http'),
@@ -9,9 +8,7 @@ var sys = require('sys'),
     url = require('url');
     
 http.createServer(function (req,res) {  
-  
-  res.addListener('end', function(){ res.end(); });
-  
+    
   var p = url.parse(req.url), base = p.pathname;  
   if (base.indexOf('data') != -1) {
     // RETURNING DATA FOR AJAX CALL
@@ -64,6 +61,7 @@ http.createServer(function (req,res) {
     
   } else {
     // REGULAR SERVER
+    if (base == '/') { base = '/index.html'; }
     var h = (base.indexOf('.css') != -1) ? 'text/css' : (base.indexOf('.js') != -1) ? 'text/javascript' : (base.indexOf('.png') != -1) ? 'image/png' : (base.indexOf('.jpg') != -1) ? 'image/jpeg' : 'text/html', filename = path.join(process.cwd(), base);
     path.exists(filename, function(exists) {  
       if(!exists) {  

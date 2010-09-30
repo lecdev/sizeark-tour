@@ -1,5 +1,3 @@
-//                  var id = r._id+'', gigDate = [id.substr(7,2),'.',id.substr(5,2),'.',id.substr(1,4)].join('');
-//                  contentBuffer.push(['<li>',gigDate,' - ',r.venue,', ',r.city,'</li>'].join(''));          
 (function(){
   String.prototype.dateify = function() {
     return [this.substr(7,2),'.',this.substr(5,2),'.',this.substr(1,4)].join('');
@@ -12,8 +10,8 @@
   $(document).ready(function(){
     var timeline = $('#timeline'), firstYear = 1999, currentYear = new Date().getFullYear(), yearsActive = currentYear - firstYear, buffer = [], months = ['','JAN','FEB','MAR','APR','MAY','JUN','JUL','AUG','SEP','OCT','NOV','DEC'];
     for (var i = firstYear; i <= currentYear; i++) {
-      var class = (i == currentYear) ? ' last' : (i == firstYear) ? ' first' : '';
-      buffer.push('<div class="year',class,'" id="y',i,'">');      
+      var c = (i == currentYear) ? ' last' : (i == firstYear) ? ' first' : '';
+      buffer.push('<div class="year',c,'" id="y',i,'">');      
       for (var j = 1;j <= 12; j++) {
         var idj = (j < 10) ? '0'+j : j;
         buffer.push('<div class="month" id="m',i,idj,'"><em>',months[j],'</em></div>');
